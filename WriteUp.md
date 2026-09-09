@@ -10,7 +10,7 @@
 
 ## 1. What did you build for Part B, and why that?
 
-> Although I haven't started implementing my feature for Part B yet, I plan on adding spending summaries to each restaurant that display the total amount spent, total number of visits, and average amount spent per visit. I chose this feature because the app is meant to track how much Brennen spends eating out, but the current UI does not show any of that information. This way, you can easily see which restaurants Brennen visits the most and where he spends the most money.
+> Didn't have enough time to implement 
 
 ## 2. What did you decide, and what did you rule out?
 
@@ -116,7 +116,6 @@ curl -i -X POST http://localhost:3000/api/restaurants \
 
 ## Known issues / what I'd do next
 
-> Anything broken, unfinished, or that you know is wrong. Being upfront here
-> costs you nothing and tells us a lot.
+> Although I haven't started implementing my feature for Part B yet, I plan on adding spending summaries to each restaurant that display the total amount spent, total number of visits, and average amount spent per visit. I chose this feature because the app is meant to track how much Brennen spends eating out, but the current UI does not show any of that information. This way, you can easily see which restaurants Brennen visits the most and where he spends the most money.
 
-> The database uses ON DELETE CASCADE, so deleting a restaurant also deletes all visits associated with it. I agree with this behavior because visits should not remain if their restaurant no longer exists.
+# The database uses ON DELETE CASCADE, so deleting a restaurant also deletes all visits associated with it. I agree with this behavior because visits should not remain if their restaurant no longer exists.
