@@ -106,6 +106,7 @@ curl -i -X POST http://localhost:3000/api/restaurants \
 # Transfer-Encoding: chunked
 
 # {"error":"Invalid restaurant data"}% 
+# The database uses ON DELETE CASCADE, so deleting a restaurant also deletes all visits associated with it. I agree with this behavior because visits should not remain if their restaurant no longer exists.
 ```
 
 **Part B** - the equivalent cases for what you built:
@@ -117,5 +118,3 @@ curl -i -X POST http://localhost:3000/api/restaurants \
 ## Known issues / what I'd do next
 
 > Although I haven't started implementing my feature for Part B yet, I plan on adding spending summaries to each restaurant that display the total amount spent, total number of visits, and average amount spent per visit. I chose this feature because the app is meant to track how much Brennen spends eating out, but the current UI does not show any of that information. This way, you can easily see which restaurants Brennen visits the most and where he spends the most money.
-
-# The database uses ON DELETE CASCADE, so deleting a restaurant also deletes all visits associated with it. I agree with this behavior because visits should not remain if their restaurant no longer exists.
