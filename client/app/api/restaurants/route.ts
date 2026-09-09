@@ -10,7 +10,7 @@ import { toRestaurant } from '@/lib/types';
 export async function GET() {
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM restaurants ORDER BY createdAt DESC'
+      'SELECT * FROM restaurants ORDER BY restaurants.created_at DESC' // createdAt in route handler diff than restaurants.created_at in migration
     );
     // Map every row - raw rows don't match the contract (NUMERIC comes back
     // as a string, timestamps as Date objects). See lib/types.ts.
@@ -31,6 +31,38 @@ export async function GET() {
  * `rating` happily accepts 6. Decide what valid means for each field and reject
  * bad bodies with a 400 rather than letting them reach the database.
  */
-export async function POST(_req: Request) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+export async function POST(req: Request) {
+  try {
+    const body = await req.json(); 
+    const { name, cuisine, address, rating } = body; 
+
+    if (
+      typeof name !== 'string' || 
+      name.trim() === '' || 
+      (cuisine !== undefined && cuisine !== null && typeof cuisine !== 'string') || 
+      (address !== undefined && address !== null && typeof address !== 'string') ||
+      (rating !== undefined && 
+        rating !== null && 
+        (typeof rating !== 'number' || rating < 0 || rating > 5)) 
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid restaurant data' }, 
+          { status: 400 } 
+        ); 
+      }
+
+    const { rows } = await pool.query(
+      `INSERT INTO restaurants (name, cuisine, address, rating)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *`, 
+        [name, cuisine ?? null, address ?? null, rating ?? null]
+    ); 
+
+    return NextResponse.json(
+      toRestaurant(rows[0]), 
+      { status: 201 } 
+    ); 
+  } catch (err) { 
+    return handleError(err); 
+  }
 }

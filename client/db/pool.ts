@@ -1,6 +1,7 @@
 // Load .env as a side effect on import. pool.ts is imported by the API route
 // handlers (inside Next) and by the standalone migrate/seed scripts, so every
 // entry point gets DATABASE_URL without wiring up dotenv itself.
+// controls how app connects to PostgreSQL
 import 'dotenv/config';
 import { Pool } from 'pg';
 

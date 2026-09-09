@@ -23,5 +23,42 @@ import { NextResponse } from 'next/server';
 export function handleError(err: unknown): NextResponse {
   console.error('Unhandled API error:', err);
 
+  // malformed json body 
+  if (err instanceof SyntaxError) 
+  {
+    return NextResponse.json(
+      { error: 'Invalid request body' }, 
+      { status: 400 } 
+    ); 
+  }
+
+  // postgresql errors 
+  if (typeof err === 'object' && err !== null && 'code' in err) 
+  {
+    const code = (err as { code?: string }).code; 
+
+    // duplicate / unique constraint 
+    if (code === '23505') 
+    {
+      return NextResponse.json(
+        { error: 'Conflict' }, 
+        { status: 409 }
+      ); 
+    }
+
+    // invalid value / constraint violation 
+    if (
+      code === '22P02' ||
+      code === '23502' || 
+      code === '23503' || 
+      code === '23514'
+    ) {
+      return NextResponse.json(
+        { error: 'Invalid request' }, 
+        { status: 400 } 
+      ); 
+    }
+  } 
+
   return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
 }
